@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bysayq17f5mqm"]
+
+[ext_resource type="PackedScene" uid="uid://nm4vfjp0l71l" path="res://Scenes/Enemy/Enemy.tscn" id="1_pgdc6"]
+[ext_resource type="Script" uid="uid://bgrlm8tvftk8w" path="res://Scenes/Rooms/RoomFight1.cs" id="1_v4uml"]
+[ext_resource type="PackedScene" uid="uid://b6tsnkamdsw36" path="res://Scenes/Player/Player.tscn" id="3_81fhj"]
+
+[node name="Room - Fight1" type="Node2D"]
+script = ExtResource("1_v4uml")
+EnemyScene = ExtResource("1_pgdc6")
+
+[node name="Player" parent="." instance=ExtResource("3_81fhj")]
+position = Vector2(209, 105)
+
+[node name="Pos1" type="Marker2D" parent="."]
+position = Vector2(41, 67)
+
+[node name="Pos2" type="Marker2D" parent="."]
+position = Vector2(48, 343)
+
+[node name="Pos3" type="Marker2D" parent="."]
+position = Vector2(747, 192)

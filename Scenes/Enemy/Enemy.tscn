@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://nm4vfjp0l71l"]
+
+[ext_resource type="Script" uid="uid://buhxhuqr26qsd" path="res://Scenes/Enemy/Enemy.cs" id="1_3l8kd"]
+[ext_resource type="Texture2D" uid="uid://dgtjy311vsnmk" path="res://Scenes/Enemy/Female001_No hair shadow-05.png" id="1_i1u57"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3l8kd"]
+atlas = ExtResource("1_i1u57")
+region = Rect2(37, 3, 23, 29)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1u57"]
+radius = 14.6818
+
+[node name="Enemy" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_3l8kd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_3l8kd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i1u57")
