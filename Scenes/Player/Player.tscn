@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6tsnkamdsw36"]
+[gd_scene load_steps=11 format=3 uid="uid://b6tsnkamdsw36"]
 
 [ext_resource type="Script" uid="uid://mtsaal6nt4w7" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
 [ext_resource type="Texture2D" uid="uid://dqnjwi5uwcl6g" path="res://Scenes/Player/Player.png" id="2_ft8w5"]
 [ext_resource type="Texture2D" uid="uid://dcm7himxul4bn" path="res://Scenes/Player/Crosshair/crosshair.png" id="3_h54ih"]
 [ext_resource type="Script" uid="uid://dlebnfemjcchg" path="res://Scenes/Player/Crosshair/Crosshair.cs" id="3_ude3g"]
+[ext_resource type="Script" uid="uid://cvw6lla7c07d3" path="res://Scenes/Player/PlayerShoot.cs" id="5_jmcll"]
+[ext_resource type="AudioStream" uid="uid://cl5ugvnwn12fc" path="res://Scenes/Player/Gun/deagle-shot-sound.mp3" id="6_4wape"]
+[ext_resource type="Script" uid="uid://b60nw3eg1htwg" path="res://Scenes/Player/PlayerDash.cs" id="7_t26db"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ft8w5"]
 size = Vector2(58, 73)
@@ -35,3 +38,12 @@ shape = SubResource("CircleShape2D_h54ih")
 
 [node name="Sprite2D" type="Sprite2D" parent="Crosshair"]
 texture = ExtResource("3_h54ih")
+
+[node name="PlayerShoot" type="Node2D" parent="."]
+script = ExtResource("5_jmcll")
+
+[node name="GunSound" type="AudioStreamPlayer2D" parent="PlayerShoot"]
+stream = ExtResource("6_4wape")
+
+[node name="PlayerDash" type="Node2D" parent="."]
+script = ExtResource("7_t26db")

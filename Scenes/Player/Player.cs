@@ -19,9 +19,9 @@ public override void _PhysicsProcess(double delta)
     Vector2 velocity = Velocity;
 
     float input = 0f;
-    if (Input.IsActionPressed("ui_left"))
+    if (Input.IsActionPressed("move_left"))
         input -= 1f;
-    if (Input.IsActionPressed("ui_right"))
+    if (Input.IsActionPressed("move_right"))
         input += 1f;
 
     velocity.X = input * Speed;
