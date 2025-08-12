@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://mtsaal6nt4w7" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
 [ext_resource type="Texture2D" uid="uid://dqnjwi5uwcl6g" path="res://Scenes/Player/Player.png" id="2_ft8w5"]
 [ext_resource type="Texture2D" uid="uid://dcm7himxul4bn" path="res://Scenes/Player/Crosshair/crosshair.png" id="3_h54ih"]
-[ext_resource type="Script" uid="uid://dlebnfemjcchg" path="res://Scenes/Player/Crosshair/Crosshair.cs" id="3_ude3g"]
+[ext_resource type="Script" uid="uid://dlebnfemjcchg" path="res://Scenes/Player/Crosshair/PlayerCrosshair.cs" id="3_ude3g"]
 [ext_resource type="Script" uid="uid://cvw6lla7c07d3" path="res://Scenes/Player/PlayerShoot.cs" id="5_jmcll"]
 [ext_resource type="AudioStream" uid="uid://cl5ugvnwn12fc" path="res://Scenes/Player/Gun/deagle-shot-sound.mp3" id="6_4wape"]
 [ext_resource type="Script" uid="uid://b60nw3eg1htwg" path="res://Scenes/Player/PlayerDash.cs" id="7_t26db"]
@@ -32,15 +32,15 @@ shape = SubResource("RectangleShape2D_ft8w5")
 scale = Vector2(3, 3)
 texture = SubResource("AtlasTexture_ft8w5")
 
-[node name="Crosshair" type="Node2D" parent="."]
+[node name="PlayerCrosshair" type="Node2D" parent="."]
 script = ExtResource("3_ude3g")
 
-[node name="Area2D" type="Area2D" parent="Crosshair"]
+[node name="Area2D" type="Area2D" parent="PlayerCrosshair"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Crosshair/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCrosshair/Area2D"]
 shape = SubResource("CircleShape2D_h54ih")
 
-[node name="Sprite2D" type="Sprite2D" parent="Crosshair"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerCrosshair"]
 texture = ExtResource("3_h54ih")
 
 [node name="PlayerShoot" type="Node2D" parent="."]

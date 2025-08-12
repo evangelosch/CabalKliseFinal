@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Crosshair : Node2D
+public partial class PlayerCrosshair : Node2D
 {
     public Area2D Area;
 

@@ -25,7 +25,7 @@ public partial class PlayerShoot : Node
 
         var gunSound = GetNodeOrNull<AudioStreamPlayer2D>("GunSound");
         gunSound?.Play();
-        var crosshair = GetParent().GetNodeOrNull<Node2D>("Crosshair");
+        var crosshair = GetParent().GetNodeOrNull<Node2D>("PlayerCrosshair");
         if (crosshair == null)
         {
             GD.Print("Crosshair not found!");
