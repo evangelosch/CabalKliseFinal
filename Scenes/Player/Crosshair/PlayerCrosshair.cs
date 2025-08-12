@@ -1,24 +1,39 @@
 using Godot;
-using System;
 
-public partial class PlayerCrosshair : Node2D
+public partial class PlayerCrosshair : Node
 {
-    public Area2D Area;
+    private Area2D _area;
 
     public override void _Ready()
     {
-        ZIndex = 100;
-		Input.MouseMode = Input.MouseModeEnum.Hidden;
-        Area = GetNode<Area2D>("Area2D");
+        // Your scene should be:
+        // PlayerCrosshair (Node)
+        // └── Area2D
+        //     ├── CollisionShape2D
+        //     └── Sprite2D (optional)
+        _area = GetNode<Area2D>("Area2D");
+
+        // Bring above most 2D
+        _area.ZIndex = 100;
+
+        // Hide OS cursor if you show a custom crosshair sprite
+        Input.MouseMode = Input.MouseModeEnum.Hidden;
     }
 
     public override void _Process(double delta)
     {
-    GlobalPosition = GetViewport().GetMousePosition();
+        // If your camera updates in Physics, move this to _PhysicsProcess
+        _area.GlobalPosition = GetViewport().GetMousePosition();
     }
 
     public Godot.Collections.Array<Node2D> GetEnemiesUnderCrosshair()
     {
-        return Area.GetOverlappingBodies();
+        // Area2D.GetOverlappingBodies() returns PhysicsBody2D, so cast to Node2D where possible
+        var result = new Godot.Collections.Array<Node2D>();
+        foreach (var body in _area.GetOverlappingBodies())
+        {
+            if (body is Node2D n2d) result.Add(n2d);
+        }
+        return result;
     }
 }

@@ -1,10 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3n84q4p6cb2p"]
+[gd_scene load_steps=4 format=3 uid="uid://b3n84q4p6cb2p"]
 
 [ext_resource type="Script" uid="uid://bcqokdsulrfhi" path="res://Scenes/Game/Game.cs" id="1_rdw05"]
 [ext_resource type="PackedScene" uid="uid://b6tsnkamdsw36" path="res://Scenes/Player/Player.tscn" id="2_gwu2e"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_xbxml"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_rdw05")
 
+[node name="StateChartDebugger" parent="." instance=ExtResource("2_xbxml")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 710.0
+offset_top = 194.0
+offset_right = 1066.0
+offset_bottom = 621.0
+grow_horizontal = 1
+grow_vertical = 1
+initial_node_to_watch = NodePath("../Player")
+
 [node name="Player" parent="." instance=ExtResource("2_gwu2e")]
-position = Vector2(617, 244)
+position = Vector2(348, 152)
