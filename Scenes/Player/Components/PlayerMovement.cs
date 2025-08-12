@@ -6,7 +6,6 @@ public partial class PlayerMovement : Node
     [Export] public int SpriteWidth = 80;
     [Export] public int SpriteHeight = 50;
 
-    // Call once if you want spawn-at-bottom logic
     public void SpawnAtBottom(CharacterBody2D body)
     {
         var viewport = body.GetViewportRect();
@@ -15,9 +14,7 @@ public partial class PlayerMovement : Node
 
     public void Stop(CharacterBody2D body)
     {
-        var v = body.Velocity;
-        v.X = 0;
-        body.Velocity = v;
+        var v = body.Velocity; v.X = 0; body.Velocity = v;
     }
 
     public void Run(CharacterBody2D body, float input, double delta)
@@ -30,7 +27,7 @@ public partial class PlayerMovement : Node
 
         Vector2 newPos = body.Position + v * (float)delta;
         newPos.X = Mathf.Clamp(newPos.X, minX, maxX);
-        newPos.Y = body.Position.Y; // keep Y fixed
+        newPos.Y = body.Position.Y;
 
         body.Position = newPos;
         body.Velocity = v;

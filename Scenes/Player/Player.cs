@@ -1,62 +1,110 @@
 using Godot;
-using GodotStateCharts; // IMPORTANT: plugin’s C# namespace
+using GodotStateCharts;
 
 public partial class Player : CharacterBody2D
 {
-    private StateChart _sc;            // wrapper for the StateChart node
+    [Export] public PlayerStats PlayerStats;
+    [Export] public Weapon StartingWeapon;
+
+    private StateChart _sc;
     private PlayerMovement _move;
-    private PlayerInput _input;
-    private float _axis;               // -1..1
+    private PlayerDash _dash;
+    private PlayerShoot _shoot;
+    private PlayerHealth _health;
+
+    private float _axis;
 
     public override void _Ready()
     {
         _sc    = StateChart.Of(GetNode("StateChart"));
-        _move  = GetNode<PlayerMovement>("PlayerMovement");
-        _input = GetNode<PlayerInput>("PlayerInput");
+        _move  = GetNode<PlayerMovement>("Components/PlayerMovement");
+        _dash  = GetNode<PlayerDash>("Components/PlayerDash");
+        _shoot = GetNode<PlayerShoot>("Components/PlayerShoot");
+        _health= GetNode<PlayerHealth>("Components/PlayerHealth");
+
+        // Inject data
+        if (PlayerStats != null)
+        {
+            _move.Speed        = PlayerStats.MoveSpeed;
+            _dash.DashDistance = PlayerStats.DashDistance;
+            _dash.DashSpeed    = PlayerStats.DashSpeed;
+            _dash.Cooldown     = PlayerStats.DashCooldown;
+        }
 
         _move.SpawnAtBottom(this);
 
-        // Init expression properties (used in guards)
+        // Init chart props
         _sc.SetExpressionProperty("move_input", 0f);
-        _sc.SetExpressionProperty("move_abs",   0f);
+        _sc.SetExpressionProperty("move_abs", 0f);
+        _sc.SetExpressionProperty("can_dash", true);
+        _sc.SetExpressionProperty("allow_dash_shoot", true);
 
-        // Hook input → chart vars/events
-        _input.MoveAxis += OnMoveAxis;
+        // --- InputBus hookups (no ambiguity; use Connect with generated names) ---
+        var ib = GetNode<InputBus>("/root/InputBus");
+        ib.Connect(InputBus.SignalName.MoveAxis,     Callable.From<float>(OnMoveAxis));
+        ib.Connect(InputBus.SignalName.DashPressed,  Callable.From(() => _sc.SendEvent("dash_press")));
+        ib.Connect(InputBus.SignalName.FirePressed,  Callable.From(() => _sc.SendEvent("fire_press")));
+        ib.Connect(InputBus.SignalName.FireReleased, Callable.From(() => _sc.SendEvent("fire_release")));
 
-        // Hook state callbacks via signals (so we don’t need Editor connections)
-        // Idle callbacks
-        var stIdle = StateChartState.Of(GetNode("StateChart/Root/Movement/Grounded/Idle"));
-        stIdle.Connect(StateChartState.SignalName.StateEntered,            Callable.From(OnEnterIdle));
-        stIdle.Connect(StateChartState.SignalName.StatePhysicsProcessing,  Callable.From<double>(OnUpdateIdle));
-        stIdle.Connect(StateChartState.SignalName.StateExited,             Callable.From(OnExitIdle));
+        // --- Hardcoded state paths ---
+        // Movement
+        ConnectState("StateChart/Root/Movement/Grounded/Idle", enter: MvEnterIdle, physics: MvUpdateIdle);
+        ConnectState("StateChart/Root/Movement/Grounded/Run",  enter: MvEnterRun,  physics: MvUpdateRun);
+        ConnectState("StateChart/Root/Movement/Dash",          enter: MvEnterDash, physics: MvUpdateDash, exit: MvExitDash);
 
-        // Run callbacks
-        var stRun = StateChartState.Of(GetNode("StateChart/Root/Movement/Grounded/Run"));
-        stRun.Connect(StateChartState.SignalName.StateEntered,            Callable.From(OnEnterRun));
-        stRun.Connect(StateChartState.SignalName.StatePhysicsProcessing,  Callable.From<double>(OnUpdateRun));
-        stRun.Connect(StateChartState.SignalName.StateExited,             Callable.From(OnExitRun));
+        // Combat (make sure your node is named 'Shooting' in the chart)
+        ConnectState("StateChart/Root/Combat/Aim",             physics: CbUpdateAim);
+        ConnectState("StateChart/Root/Combat/Shoot",        enter: CbEnterShooting, physics: CbUpdateShooting, exit: CbExitShooting);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        MoveAndSlide(); // movement is applied inside the state callbacks
+        // movement happens in state callbacks; we just slide the body here
+        MoveAndSlide();
     }
 
-    // ===== Input → chart =====
+    // ------- Input → chart -------
     private void OnMoveAxis(float axis)
     {
         _axis = axis;
         _sc.SetExpressionProperty("move_input", _axis);
         _sc.SetExpressionProperty("move_abs", Mathf.Abs(_axis));
-        _sc.SendEvent("move_update"); // drives the Idle<->Run transitions
+        _sc.SendEvent("move_update");
     }
 
-    // ===== State callbacks =====
-    private void OnEnterIdle() { _move.Stop(this); }
-    private void OnUpdateIdle(double dt) { /* no-op */ }
-    private void OnExitIdle() { }
+    // ------- Movement callbacks -------
+    private void MvEnterIdle()                   => _move.Stop(this);
+    private void MvUpdateIdle(double dt)         { }
 
-    private void OnEnterRun() { /* start run anim if needed */ }
-    private void OnUpdateRun(double dt) => _move.Run(this, _axis, dt);
-    private void OnExitRun()  { /* stop run anim if needed */ }
+    private void MvEnterRun()                    { /* start run anim if desired */ }
+    private void MvUpdateRun(double dt)          => _move.Run(this, _axis, dt);
+
+    private void MvEnterDash()
+    {
+        _dash.StartDash(this, _axis, () => _sc.SendEvent("dash_done"));
+        _sc.SetExpressionProperty("can_dash", false);
+    }
+    private void MvUpdateDash(double dt)         => _dash.TickDash(this, dt);
+    private void MvExitDash()
+    {
+        _dash.EndDash(this);
+        _dash.BeginCooldown(() => _sc.SetExpressionProperty("can_dash", true));
+    }
+
+    // ------- Combat callbacks -------
+    private void CbUpdateAim(double dt)          => _shoot.TickAim(dt);
+    private void CbEnterShooting()               => _shoot.BeginBurst();
+    private void CbUpdateShooting(double dt)     => _shoot.TickShooting(dt); // no shoot_done here; release drives exit
+    private void CbExitShooting()                => _shoot.EndBurst();
+
+    // ------- Helper to connect a state node directly -------
+    private void ConnectState(string nodePath, System.Action enter = null,
+                              System.Action<double> physics = null,
+                              System.Action exit = null)
+    {
+        var st = StateChartState.Of(GetNode(nodePath));
+        if (enter   != null) st.Connect(StateChartState.SignalName.StateEntered,           Callable.From(enter));
+        if (physics != null) st.Connect(StateChartState.SignalName.StatePhysicsProcessing, Callable.From<double>(physics));
+        if (exit    != null) st.Connect(StateChartState.SignalName.StateExited,            Callable.From(exit));
+    }
 }
