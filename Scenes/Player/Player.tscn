@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -17,6 +18,9 @@
 =======
 [gd_scene load_steps=24 format=3 uid="uid://b6tsnkamdsw36"]
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
+>>>>>>> Stashed changes
 =======
 [gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
 >>>>>>> Stashed changes
@@ -61,7 +65,10 @@ script = ExtResource("15_6tu5v")
 expression = "movement_abs <= 0.1"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
@@ -69,6 +76,7 @@ metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 [sub_resource type="Resource" id="Resource_0objx"]
 script = ExtResource("15_6tu5v")
 expression = "can_dash"
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
@@ -87,6 +95,8 @@ metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
 =======
+=======
+>>>>>>> Stashed changes
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
 >>>>>>> Stashed changes
@@ -124,6 +134,9 @@ script = ExtResource("5_i5acl")
 script = ExtResource("5_jmcll")
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -136,6 +149,7 @@ Stats = ExtResource("2_spxdj")
 
 [node name="PlayerHealth" type="Node" parent="Components"]
 script = ExtResource("8_0objx")
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 [node name="PlayerCrosshair" type="Node" parent="Components"]
@@ -173,6 +187,8 @@ Stats = ExtResource("2_spxdj")
 
 [node name="PlayerHealth" type="Node" parent="Components"]
 script = ExtResource("8_0objx")
+=======
+>>>>>>> Stashed changes
 
 [node name="PlayerCrosshair" type="Node" parent="Components"]
 script = ExtResource("3_ude3g")

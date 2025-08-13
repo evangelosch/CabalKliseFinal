@@ -1,9 +1,13 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerStats.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerStats.cs
+>>>>>>> Stashed changes
 =======
 // PlayerStats.cs
 >>>>>>> Stashed changes
@@ -17,7 +21,10 @@ public partial class PlayerStats : Resource
 {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -31,6 +38,7 @@ public partial class PlayerStats : Resource
     [Export] public float DashCooldown { get; set; } = 2f; // seconds per charge
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     [Export] public int MaxHealth = 5;
     [Export] public float MoveSpeed = 500f;
@@ -38,6 +46,8 @@ public partial class PlayerStats : Resource
     [Export] public float DashSpeed = 1200f;
     [Export] public float DashCooldown = 0.8f;
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

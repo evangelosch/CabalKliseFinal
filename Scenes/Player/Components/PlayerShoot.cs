@@ -1,9 +1,13 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerShoot.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerShoot.cs
+>>>>>>> Stashed changes
 =======
 // PlayerShoot.cs
 >>>>>>> Stashed changes
@@ -16,7 +20,10 @@ public partial class PlayerShoot : Node
 {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     public float Cooldown { get; private set; } = 0f;
@@ -39,6 +46,7 @@ public partial class PlayerShoot : Node
     }
 
     public void EndBurst() { /* stop shooting */ }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
     [Export] public NodePath ShootSfxPath;
@@ -77,6 +85,8 @@ public partial class PlayerShoot : Node
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
 =======
     public void EndBurst() { /* stop shooting */ }
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

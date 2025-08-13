@@ -1,9 +1,13 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // InputBus.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// InputBus.cs
+>>>>>>> Stashed changes
 =======
 // InputBus.cs
 >>>>>>> Stashed changes
@@ -21,7 +25,10 @@ public partial class InputBus : Node
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     private float _lastAxis = 0f;
@@ -44,6 +51,7 @@ public partial class InputBus : Node
 
         if (Input.IsActionJustReleased("fire"))
             EmitSignal(SignalName.FireReleased);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
     private float _axis;
@@ -76,6 +84,8 @@ public partial class InputBus : Node
 
         if (Input.IsActionJustReleased("fire"))
             EmitSignal(SignalName.FireReleased);
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
