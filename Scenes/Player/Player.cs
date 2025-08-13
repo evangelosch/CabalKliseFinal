@@ -40,6 +40,12 @@ public partial class Player : CharacterBody2D
     private const string EVT_FIRE_PRESS  = "fire_pressed";
     private const string EVT_FIRE_REL    = "fire_released";
 
+    private const string EVT_MOVE_UPDATE = "movement_update";
+    private const string EVT_DASH_PRESS  = "dash_pressed";
+    private const string EVT_DASH_DONE   = "dash_done";
+    private const string EVT_FIRE_PRESS  = "fire_pressed";
+    private const string EVT_FIRE_REL    = "fire_released";
+
     public override void _Ready()
     {
 <<<<<<< Updated upstream
@@ -61,6 +67,7 @@ public partial class Player : CharacterBody2D
 
         if (StartingWeapon != null)
             _shoot.Equip(StartingWeapon);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
@@ -111,6 +118,11 @@ public partial class Player : CharacterBody2D
     private void OnUpdateRun(double dt) => _move.Run(this, _axis, dt);
     private void OnExitRun()  { /* stop run anim if needed */ }
 =======
+=======
+
+        _movement.SpawnAtBottom(this);
+
+>>>>>>> Stashed changes
 =======
 
         _movement.SpawnAtBottom(this);

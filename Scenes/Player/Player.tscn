@@ -1,6 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [gd_scene load_steps=21 format=3 uid="uid://b6tsnkamdsw36"]
+=======
+[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
+>>>>>>> Stashed changes
 =======
 [gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
 >>>>>>> Stashed changes
@@ -50,7 +54,10 @@ expression = "can_dash"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 [sub_resource type="Resource" id="Resource_6tu5v"]
 script = ExtResource("15_6tu5v")
 expression = "shoot_cd <= 0.0"
