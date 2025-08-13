@@ -3,46 +3,66 @@ using Godot;
 public partial class PlayerShoot : Node
 {
     [Export] public NodePath ShootSfxPath;
-    [Export] public bool Automatic = false; // hold-to-fire
-    [Export] public float FireRate = 6f;
+    [Export] public bool Automatic = false;        // hold to auto-fire
+    [Export] public float DelayBetweenShots = 1f;  // seconds between shots
 
-    private AudioStreamPlayer _sfx;
     private AudioStreamPlayer2D _sfx2D;
-    private float _cd;
+    private float _cd; // seconds remaining until we can shoot again
+
+    public float Cooldown => _cd; // expose to statechart
 
     public override void _Ready()
     {
-        _sfx  = !ShootSfxPath.IsEmpty ? GetNodeOrNull<AudioStreamPlayer>(ShootSfxPath) : GetNodeOrNull<AudioStreamPlayer>("AudioStreamPlayer");
-        _sfx2D= !ShootSfxPath.IsEmpty ? GetNodeOrNull<AudioStreamPlayer2D>(ShootSfxPath) : GetNodeOrNull<AudioStreamPlayer2D>("GunSound");
-        if (_sfx == null && _sfx2D == null)
-            GD.PushWarning("[PlayerShoot] No AudioStreamPlayer(2D) assigned.");
+        _sfx2D = !ShootSfxPath.IsEmpty
+            ? GetNodeOrNull<AudioStreamPlayer2D>(ShootSfxPath)
+            : GetNodeOrNull<AudioStreamPlayer2D>("GunSound");
+
+        if (_sfx2D == null)
+            GD.PushWarning("[PlayerShoot] No AudioStreamPlayer2D assigned.");
     }
 
-    public void TickAim(double dt) { }
+    public void TickAim(double dt)
+    {
+        // optional aim visuals here
+    }
+
+    /// Call this every frame in Aim to drain cooldown.
+    public void TickCooldown(double dt)
+    {
+        if (_cd > 0f)
+            _cd = Mathf.Max(0f, _cd - (float)dt);
+    }
 
     public void BeginBurst()
     {
-        _cd = 0f;           // allow immediate shot on enter
+        // Gate on cooldown: do NOT fire if still cooling down
+        if (_cd > 0f) return;
+
         PlayShot();
+        _cd = Mathf.Max(0.001f, DelayBetweenShots);
     }
 
     public void TickShooting(double dt)
     {
-        if (!Automatic) return; // single-shot per press; nothing to do per-frame
+        if (!Automatic) return; // single-shot per press; hold does nothing extra
 
-        _cd -= (float)dt;
-        if (_cd <= 0f)
+        // Auto mode: fire again whenever cooldown elapses
+        if (_cd > 0f)
         {
-            PlayShot();
-            _cd = 1f / Mathf.Max(FireRate, 0.001f);
+            _cd = Mathf.Max(0f, _cd - (float)dt);
+            return;
         }
+
+        PlayShot();
+        _cd = Mathf.Max(0.001f, DelayBetweenShots);
     }
 
-    public void EndBurst() { }
+    public void EndBurst() { /* stop loops if you add any later */ }
 
     private void PlayShot()
     {
-        if (_sfx != null)  { if (_sfx.Playing) _sfx.Stop(); _sfx.Play(); }
-        else if (_sfx2D != null) { if (_sfx2D.Playing) _sfx2D.Stop(); _sfx2D.Play(); }
+        if (_sfx2D == null) return;
+        if (_sfx2D.Playing) _sfx2D.Stop(); // retrigger cleanly
+        _sfx2D.Play();
     }
 }

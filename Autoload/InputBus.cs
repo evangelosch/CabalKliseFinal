@@ -11,22 +11,27 @@ public partial class InputBus : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        float a = 0f;
-        if (Input.IsActionPressed("move_left"))  a -= 1f;
-        if (Input.IsActionPressed("move_right")) a += 1f;
-        a = Mathf.Clamp(a, -1f, 1f);
+        float axis = 0f;
+        if (Input.IsActionPressed("move_left"))  axis -= 1f;
+        if (Input.IsActionPressed("move_right")) axis += 1f;
+        axis = Mathf.Clamp(axis, -1f, 1f);
 
-        if (!Mathf.IsEqualApprox(a, _axis))
+        if (!Mathf.IsEqualApprox(axis, _axis))
         {
-            _axis = a;
+            _axis = axis;
             EmitSignal(SignalName.MoveAxis, _axis);
         }
     }
 
-    public override void _Input(InputEvent e)
+    public override void _Input(InputEvent @event)
     {
-        if (e.IsActionPressed("dash"))  EmitSignal(SignalName.DashPressed);
-        if (e.IsActionPressed("fire"))  EmitSignal(SignalName.FirePressed);
-        if (e.IsActionReleased("fire")) EmitSignal(SignalName.FireReleased);
+        if (@event.IsActionPressed("dash"))
+        {
+            GD.Print("[InputBus] Dash pressed");
+            EmitSignal(SignalName.DashPressed);
+        }
+        
+        if (@event.IsActionPressed("fire")) EmitSignal(SignalName.FirePressed);
+        if (@event.IsActionReleased("fire")) EmitSignal(SignalName.FireReleased);
     }
 }

@@ -6,7 +6,7 @@ public partial class Player : CharacterBody2D
     [Export] public PlayerStats PlayerStats;
     [Export] public Weapon StartingWeapon;
 
-    private StateChart _sc;
+    private StateChart _stateChart;
     private PlayerMovement _move;
     private PlayerDash _dash;
     private PlayerShoot _shoot;
@@ -16,86 +16,133 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
-        _sc    = StateChart.Of(GetNode("StateChart"));
-        _move  = GetNode<PlayerMovement>("Components/PlayerMovement");
-        _dash  = GetNode<PlayerDash>("Components/PlayerDash");
-        _shoot = GetNode<PlayerShoot>("Components/PlayerShoot");
-        _health= GetNode<PlayerHealth>("Components/PlayerHealth");
+        _stateChart = StateChart.Of(GetNode("StateChart"));
+        _move   = GetNode<PlayerMovement>("Components/PlayerMovement");
+        _dash   = GetNode<PlayerDash>("Components/PlayerDash");
+        _shoot  = GetNode<PlayerShoot>("Components/PlayerShoot");
+        _health = GetNode<PlayerHealth>("Components/PlayerHealth");
 
-        // Inject data
+        // Inject data from PlayerStats
         if (PlayerStats != null)
         {
             _move.Speed        = PlayerStats.MoveSpeed;
             _dash.DashDistance = PlayerStats.DashDistance;
             _dash.DashSpeed    = PlayerStats.DashSpeed;
-            _dash.Cooldown     = PlayerStats.DashCooldown;
         }
+
+        // if (StartingWeapon != null)
+        //     _shoot.Equip(StartingWeapon);
 
         _move.SpawnAtBottom(this);
 
-        // Init chart props
-        _sc.SetExpressionProperty("move_input", 0f);
-        _sc.SetExpressionProperty("move_abs", 0f);
-        _sc.SetExpressionProperty("can_dash", true);
-        _sc.SetExpressionProperty("allow_dash_shoot", true);
+        // Init chart expression properties
+        _stateChart.SetExpressionProperty("move_input", 0f);
+        _stateChart.SetExpressionProperty("move_abs", 0f);
+        _stateChart.SetExpressionProperty("allow_dash_shoot", true);
 
-        // --- InputBus hookups (no ambiguity; use Connect with generated names) ---
-        var ib = GetNode<InputBus>("/root/InputBus");
-        ib.Connect(InputBus.SignalName.MoveAxis,     Callable.From<float>(OnMoveAxis));
-        ib.Connect(InputBus.SignalName.DashPressed,  Callable.From(() => _sc.SendEvent("dash_press")));
-        ib.Connect(InputBus.SignalName.FirePressed,  Callable.From(() => _sc.SendEvent("fire_press")));
-        ib.Connect(InputBus.SignalName.FireReleased, Callable.From(() => _sc.SendEvent("fire_release")));
+        // Set from dash charges (guard uses this)
+        _stateChart.SetExpressionProperty("can_dash", _dash.CanStartDash());
 
-        // --- Hardcoded state paths ---
+        // Expose shooting cooldown for Aim -> Shoot guard (shoot_cd <= 0)
+        _stateChart.SetExpressionProperty("shoot_cd", 0f);
+
+        // --- InputBus hookups ---
+        var inputBus = GetNode<InputBus>("/root/InputBus");
+        inputBus.Connect(InputBus.SignalName.MoveAxis,     Callable.From<float>(OnMoveAxis));
+        inputBus.Connect(InputBus.SignalName.DashPressed,  Callable.From(() => _stateChart.SendEvent("dash_press")));
+        inputBus.Connect(InputBus.SignalName.FirePressed,  Callable.From(() => _stateChart.SendEvent("fire_press")));
+        inputBus.Connect(InputBus.SignalName.FireReleased, Callable.From(() => _stateChart.SendEvent("fire_release")));
+
+        // Keep can_dash in sync with charges
+        _dash.Connect(PlayerDash.SignalName.ChargesChanged,
+            Callable.From<int, int>((current, max) =>
+            {
+                _stateChart.SetExpressionProperty("can_dash", current > 0);
+            }));
+
+        // --- State connections ---
         // Movement
         ConnectState("StateChart/Root/Movement/Grounded/Idle", enter: MvEnterIdle, physics: MvUpdateIdle);
         ConnectState("StateChart/Root/Movement/Grounded/Run",  enter: MvEnterRun,  physics: MvUpdateRun);
-        ConnectState("StateChart/Root/Movement/Dash",          enter: MvEnterDash, physics: MvUpdateDash, exit: MvExitDash);
 
-        // Combat (make sure your node is named 'Shooting' in the chart)
-        ConnectState("StateChart/Root/Combat/Aim",             physics: CbUpdateAim);
-        ConnectState("StateChart/Root/Combat/Shoot",        enter: CbEnterShooting, physics: CbUpdateShooting, exit: CbExitShooting);
+        // Dash: we start dash on Enter, but physics tick is handled centrally in _PhysicsProcess.
+        ConnectState("StateChart/Root/Movement/Dash", enter: MvEnterDash, physics: MvUpdateDash, exit: MvExitDash);
+
+        // Combat
+        ConnectState("StateChart/Root/Combat/Aim",   physics: CbUpdateAim);
+        ConnectState("StateChart/Root/Combat/Shoot", enter: CbEnterShooting, physics: CbUpdateShooting, exit: CbExitShooting);
     }
 
-    public override void _PhysicsProcess(double delta)
+   public override void _PhysicsProcess(double delta)
+{
+    if (_dash.IsDashing)
     {
-        // movement happens in state callbacks; we just slide the body here
-        MoveAndSlide();
+        _dash.TickDash(this, delta);  // sets velocity
+        MoveAndSlide();               // do the move once
+        _dash.AfterSlide(this);       // consume actual pixels moved / detect wall
+        return;
     }
+
+    // normal movement:
+    MoveAndSlide();
+}
+
 
     // ------- Input → chart -------
     private void OnMoveAxis(float axis)
     {
         _axis = axis;
-        _sc.SetExpressionProperty("move_input", _axis);
-        _sc.SetExpressionProperty("move_abs", Mathf.Abs(_axis));
-        _sc.SendEvent("move_update");
+        _stateChart.SetExpressionProperty("move_input", _axis);
+        _stateChart.SetExpressionProperty("move_abs", Mathf.Abs(_axis));
+        _stateChart.SendEvent("move_update");
     }
 
     // ------- Movement callbacks -------
     private void MvEnterIdle()                   => _move.Stop(this);
-    private void MvUpdateIdle(double dt)         { }
+    private void MvUpdateIdle(double dt)         { /* idle keeps velocity zeroed by _move.Stop */ }
 
     private void MvEnterRun()                    { /* start run anim if desired */ }
-    private void MvUpdateRun(double dt)          => _move.Run(this, _axis, dt);
+    private void MvUpdateRun(double dt)          => _move.Run(this, _axis, dt); // sets Velocity only
 
     private void MvEnterDash()
     {
-        _dash.StartDash(this, _axis, () => _sc.SendEvent("dash_done"));
-        _sc.SetExpressionProperty("can_dash", false);
+        // StartDash consumes a charge and will emit ChargesChanged (updating can_dash)
+        GD.Print("[Player] Starting dash with axis: ", _axis);
+        _dash.StartDash(this, _axis, () => _stateChart.SendEvent("dash_done"));
     }
-    private void MvUpdateDash(double dt)         => _dash.TickDash(this, dt);
+
+    // Important: leave dash physics empty — _PhysicsProcess drives dash each frame.
+    private void MvUpdateDash(double dt) { }
+
     private void MvExitDash()
     {
         _dash.EndDash(this);
-        _dash.BeginCooldown(() => _sc.SetExpressionProperty("can_dash", true));
+        // No per-dash cooldown — PlayerDash recharges continuously.
+        // can_dash flips back via ChargesChanged when a charge refills.
     }
 
-    // ------- Combat callbacks -------
-    private void CbUpdateAim(double dt)          => _shoot.TickAim(dt);
-    private void CbEnterShooting()               => _shoot.BeginBurst();
-    private void CbUpdateShooting(double dt)     => _shoot.TickShooting(dt); // no shoot_done here; release drives exit
-    private void CbExitShooting()                => _shoot.EndBurst();
+    // ------- Combat callbacks (cooldown-aware) -------
+    private void CbUpdateAim(double dt)
+    {
+        _shoot.TickAim(dt);
+        _shoot.TickCooldown(dt);
+        _stateChart.SetExpressionProperty("shoot_cd", _shoot.Cooldown);
+    }
+
+    private void CbEnterShooting()
+    {
+        _shoot.BeginBurst();
+        _stateChart.SetExpressionProperty("shoot_cd", _shoot.Cooldown);
+    }
+
+    private void CbUpdateShooting(double dt)
+    {
+        _shoot.TickShooting(dt);
+        _stateChart.SetExpressionProperty("shoot_cd", _shoot.Cooldown);
+        // FireReleased drives exit to Aim.
+    }
+
+    private void CbExitShooting() => _shoot.EndBurst();
 
     // ------- Helper to connect a state node directly -------
     private void ConnectState(string nodePath, System.Action enter = null,
