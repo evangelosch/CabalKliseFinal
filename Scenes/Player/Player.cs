@@ -6,7 +6,11 @@ using GodotStateCharts; // IMPORTANT: plugin’s C# namespace
 =======
 using GodotStateCharts;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+using System;
+>>>>>>> Stashed changes
 =======
 using System;
 >>>>>>> Stashed changes
@@ -17,6 +21,7 @@ public partial class Player : CharacterBody2D
     [Export] public Weapon StartingWeapon;
 
     private StateChart _stateChart;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     private PlayerMovement _move;
 <<<<<<< HEAD
@@ -38,12 +43,18 @@ public partial class Player : CharacterBody2D
 =======
     private PlayerMovement _movement;
 >>>>>>> Stashed changes
+=======
+    private PlayerMovement _movement;
+>>>>>>> Stashed changes
     private PlayerDash _dash;
     private PlayerShoot _shoot;
     private PlayerHealth _health;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     private bool _dashRequested;
     private float _axis;
 >>>>>>> Stashed changes
@@ -90,6 +101,12 @@ public partial class Player : CharacterBody2D
     private const string EVT_FIRE_PRESS  = "fire_pressed";
     private const string EVT_FIRE_REL    = "fire_released";
 
+    private const string EVT_MOVE_UPDATE = "movement_update";
+    private const string EVT_DASH_PRESS  = "dash_pressed";
+    private const string EVT_DASH_DONE   = "dash_done";
+    private const string EVT_FIRE_PRESS  = "fire_pressed";
+    private const string EVT_FIRE_REL    = "fire_released";
+
     public override void _Ready()
     {
         _stateChart = StateChart.Of(GetNode("StateChart"));
@@ -104,6 +121,7 @@ public partial class Player : CharacterBody2D
             _dash.SetStats(PlayerStats);
         }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         // if (StartingWeapon != null)
         //     _shoot.Equip(StartingWeapon);
@@ -139,6 +157,17 @@ public partial class Player : CharacterBody2D
         _stateChart.SetExpressionProperty("can_dash", _dash.CanStartDash());
 
         // Expose shooting cooldown for Aim -> Shoot guard (shoot_cd <= 0)
+=======
+        if (StartingWeapon != null)
+            _shoot.Equip(StartingWeapon);
+
+        _movement.SpawnAtBottom(this);
+
+        _stateChart.SetExpressionProperty("movement_input", 0f);
+        _stateChart.SetExpressionProperty("movement_abs", 0f);
+        _stateChart.SetExpressionProperty("allow_dash_shoot", true);
+        _stateChart.SetExpressionProperty("can_dash", _dash.Charges > 0);
+>>>>>>> Stashed changes
 =======
         if (StartingWeapon != null)
             _shoot.Equip(StartingWeapon);
@@ -223,6 +252,7 @@ public partial class Player : CharacterBody2D
         _stateChart.SendEvent(EVT_DASH_PRESS);
     }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< HEAD
     private void OnEnterRun() { /* start run anim if needed */ }
@@ -318,6 +348,8 @@ public partial class Player : CharacterBody2D
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     private void OnFirePressed()  => _stateChart.SendEvent(EVT_FIRE_PRESS);
     private void OnFireReleased() => _stateChart.SendEvent(EVT_FIRE_REL);
 
@@ -331,6 +363,9 @@ public partial class Player : CharacterBody2D
     private void MvEnterRun()                    { /* start run anim if you want */ }
     private void MvUpdateRun(double dt)          => _movement.Run(this, _axis, dt);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 
     private void MvEnterDash()
     {
@@ -356,6 +391,7 @@ public partial class Player : CharacterBody2D
     private void MvUpdateDash(double dt) { /* dash moved centrally in _PhysicsProcess */ }
 
     private void MvExitDash() => _dash.EndDash(this);
+<<<<<<< Updated upstream
 
     // -------- Combat callbacks
 =======
@@ -395,6 +431,10 @@ public partial class Player : CharacterBody2D
 =======
     // -------- Combat callbacks
 >>>>>>> Stashed changes
+=======
+
+    // -------- Combat callbacks
+>>>>>>> Stashed changes
     private void CbUpdateAim(double dt)
     {
         _shoot.TickAim(dt);
@@ -413,10 +453,13 @@ public partial class Player : CharacterBody2D
         _shoot.TickShooting(dt);
         _stateChart.SetExpressionProperty("shoot_cd", _shoot.Cooldown);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
         // FireReleased drives exit to Aim.
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }
@@ -424,11 +467,15 @@ public partial class Player : CharacterBody2D
     private void CbExitShooting() => _shoot.EndBurst();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     // -------- helper
 =======
     // ------- Helper to connect a state node directly -------
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+    // -------- helper
+>>>>>>> Stashed changes
 =======
     // -------- helper
 >>>>>>> Stashed changes

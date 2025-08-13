@@ -1,8 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // InputBus.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// InputBus.cs
+>>>>>>> Stashed changes
 =======
 // InputBus.cs
 >>>>>>> Stashed changes
@@ -16,7 +20,10 @@ public partial class InputBus : Node
     [Signal] public delegate void FireReleasedEventHandler();
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     private float _lastAxis = 0f;
 
     public override void _PhysicsProcess(double delta)
@@ -37,6 +44,7 @@ public partial class InputBus : Node
 
         if (Input.IsActionJustReleased("fire"))
             EmitSignal(SignalName.FireReleased);
+<<<<<<< Updated upstream
 =======
     private float _axis;
 =======
@@ -68,6 +76,8 @@ public partial class InputBus : Node
 
         if (Input.IsActionJustReleased("fire"))
             EmitSignal(SignalName.FireReleased);
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }

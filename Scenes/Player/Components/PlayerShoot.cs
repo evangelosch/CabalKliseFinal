@@ -1,8 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerShoot.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerShoot.cs
+>>>>>>> Stashed changes
 =======
 // PlayerShoot.cs
 >>>>>>> Stashed changes
@@ -11,7 +15,10 @@ using Godot;
 public partial class PlayerShoot : Node
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     public float Cooldown { get; private set; } = 0f;
 
     public void Equip(Weapon w) { /* later */ }
@@ -32,6 +39,7 @@ public partial class PlayerShoot : Node
     }
 
     public void EndBurst() { /* stop shooting */ }
+<<<<<<< Updated upstream
 =======
     [Export] public NodePath ShootSfxPath;
     [Export] public bool Automatic = false;        // hold to auto-fire
@@ -69,5 +77,7 @@ public partial class PlayerShoot : Node
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
 =======
     public void EndBurst() { /* stop shooting */ }
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

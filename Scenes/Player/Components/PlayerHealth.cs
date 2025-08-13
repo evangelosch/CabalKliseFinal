@@ -1,8 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerHealth.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerHealth.cs
+>>>>>>> Stashed changes
 =======
 // PlayerHealth.cs
 >>>>>>> Stashed changes
@@ -11,7 +15,10 @@ using Godot;
 public partial class PlayerHealth : Node
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     [Export] public int MaxHp = 3;
     public int Hp { get; private set; }
 
@@ -21,6 +28,7 @@ public partial class PlayerHealth : Node
     {
         Hp = Mathf.Max(0, Hp - amount);
         if (Hp == 0) GD.Print("[PlayerHealth] Dead");
+<<<<<<< Updated upstream
 =======
     [Export] public PlayerStats Stats;
     public int Current { get; private set; }
@@ -45,6 +53,8 @@ public partial class PlayerHealth : Node
 =======
         Hp = Mathf.Max(0, Hp - amount);
         if (Hp == 0) GD.Print("[PlayerHealth] Dead");
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }

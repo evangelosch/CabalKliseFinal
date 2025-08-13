@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -16,6 +17,9 @@
 =======
 [gd_scene load_steps=24 format=3 uid="uid://b6tsnkamdsw36"]
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
+>>>>>>> Stashed changes
 =======
 [gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
 >>>>>>> Stashed changes
@@ -56,12 +60,16 @@ metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 script = ExtResource("15_6tu5v")
 expression = "movement_abs <= 0.1"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
 [sub_resource type="Resource" id="Resource_0objx"]
 script = ExtResource("15_6tu5v")
 expression = "can_dash"
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
@@ -78,6 +86,10 @@ metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 >>>>>>> Stashed changes
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+metadata/_custom_type_script = "uid://le5w1cm0ul8p"
+
+>>>>>>> Stashed changes
 [sub_resource type="Resource" id="Resource_6tu5v"]
 script = ExtResource("15_6tu5v")
 expression = "shoot_cd <= 0.0"
@@ -111,6 +123,9 @@ script = ExtResource("5_i5acl")
 [node name="PlayerShoot" type="Node" parent="Components"]
 script = ExtResource("5_jmcll")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 
 [node name="GunSound" type="AudioStreamPlayer2D" parent="Components/PlayerShoot"]
 stream = ExtResource("6_4wape")
@@ -121,6 +136,7 @@ Stats = ExtResource("2_spxdj")
 
 [node name="PlayerHealth" type="Node" parent="Components"]
 script = ExtResource("8_0objx")
+<<<<<<< Updated upstream
 
 [node name="PlayerCrosshair" type="Node" parent="Components"]
 >>>>>>> Stashed changes
@@ -152,6 +168,8 @@ stream = ExtResource("6_4wape")
 [node name="PlayerDash" type="Node" parent="Components"]
 script = ExtResource("7_t26db")
 Stats = ExtResource("2_spxdj")
+=======
+>>>>>>> Stashed changes
 
 [node name="PlayerHealth" type="Node" parent="Components"]
 script = ExtResource("8_0objx")

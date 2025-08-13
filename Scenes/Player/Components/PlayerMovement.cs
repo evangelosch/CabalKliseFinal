@@ -7,6 +7,7 @@ public partial class PlayerMovement : Node
     [Export] public int SpriteHeight = 50;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     public float Speed { get; set; } = 220f;
 
@@ -24,6 +25,9 @@ public partial class PlayerMovement : Node
 =======
     public float Speed { get; set; } = 220f;
 >>>>>>> Stashed changes
+=======
+    public float Speed { get; set; } = 220f;
+>>>>>>> Stashed changes
 
 >>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea:Scenes/Player/Components/PlayerMovement.cs
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
@@ -36,6 +40,7 @@ public partial class PlayerMovement : Node
     public void Stop(CharacterBody2D body)
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         var v = body.Velocity;
         v.X = 0;
@@ -47,11 +52,16 @@ public partial class PlayerMovement : Node
         var v = body.Velocity;
         v.X = 0;
 >>>>>>> Stashed changes
+=======
+        var v = body.Velocity;
+        v.X = 0;
+>>>>>>> Stashed changes
         body.Velocity = v;
     }
 
     public void Run(CharacterBody2D body, float input, double delta)
     {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< HEAD
         var v = body.Velocity;
@@ -88,6 +98,13 @@ public partial class PlayerMovement : Node
     }
 
 >>>>>>> Stashed changes
+=======
+        var v = body.Velocity;
+        v.X = input * Speed;
+        body.Velocity = v;
+    }
+
+>>>>>>> Stashed changes
     public void ClampToScreen(CharacterBody2D body)
     {
         float half = SpriteWidth / 2f;
@@ -97,6 +114,7 @@ public partial class PlayerMovement : Node
         p.X = Mathf.Clamp(p.X, minX, maxX);
         body.Position = p;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 >>>>>>> Stashed changes:Scenes/Player/Components/PlayerMovement.cs
@@ -104,6 +122,8 @@ public partial class PlayerMovement : Node
         body.Velocity = velocity;
 >>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea:Scenes/Player/Components/PlayerMovement.cs
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     }

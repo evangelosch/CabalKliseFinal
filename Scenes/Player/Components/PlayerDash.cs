@@ -1,8 +1,12 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerDash.cs (drop-in replacement of your class)
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerDash.cs (drop-in replacement of your class)
+>>>>>>> Stashed changes
 =======
 // PlayerDash.cs (drop-in replacement of your class)
 >>>>>>> Stashed changes
@@ -11,6 +15,7 @@ using System;
 
 public partial class PlayerDash : Node
 {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< HEAD
     [Export] public PlayerStats Stats;
@@ -55,6 +60,10 @@ public partial class PlayerDash : Node
     [Export] public PlayerStats Stats;
     [Export] public int MaxCharges = 2;
 >>>>>>> Stashed changes
+=======
+    [Export] public PlayerStats Stats;
+    [Export] public int MaxCharges = 2;
+>>>>>>> Stashed changes
 
     [Signal] public delegate void ChargesChangedEventHandler(int current, int max);
 
@@ -77,8 +86,13 @@ public partial class PlayerDash : Node
     public override void _Ready()
     {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         _charges = Mathf.Max(1, MaxCharges);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        ApplyStats();
+        _charges = MaxCharges;
+>>>>>>> Stashed changes
 =======
         ApplyStats();
         _charges = MaxCharges;
@@ -88,7 +102,10 @@ public partial class PlayerDash : Node
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     public void SetStats(PlayerStats stats)
@@ -114,6 +131,9 @@ public partial class PlayerDash : Node
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
     public override void _PhysicsProcess(double delta)
     {
         // Recharge
@@ -123,6 +143,7 @@ public partial class PlayerDash : Node
             while (_charges < MaxCharges && _rechargeTimer >= _rechargeTime)
             {
                 _rechargeTimer -= _rechargeTime;
+<<<<<<< Updated upstream
 =======
 =======
 >>>>>>> Stashed changes
@@ -140,6 +161,8 @@ public partial class PlayerDash : Node
 =======
                 _rechargeTimer -= _rechargeTime;
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                 _charges++;
                 EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
             }
@@ -149,7 +172,10 @@ public partial class PlayerDash : Node
     public bool CanStartDash() => !_active && _charges > 0;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     public void StartDash(CharacterBody2D body, float axis, Action onFinished)
     {
         GD.Print($"[StartDash] pre: active={_active}, charges={_charges}, axis={axis}");
@@ -190,6 +216,7 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
         EndDash(body);
         _onFinished?.Invoke();
         _onFinished = null;
+<<<<<<< Updated upstream
     }
 }
 =======
@@ -215,7 +242,10 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
 
         _lastPos = body.GlobalPosition;
         body.Velocity = _dir * _dashSpeed;
+=======
+>>>>>>> Stashed changes
     }
+}
 
     public void TickDashPre(CharacterBody2D body)
 {
@@ -247,6 +277,7 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
     {
         if (!_active) return;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         _active = false;
         body.Velocity = Vector2.Zero;
@@ -277,6 +308,10 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
         _charges = clamped;
         EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        _active = false;
+        body.Velocity = Vector2.Zero;
+>>>>>>> Stashed changes
 =======
         _active = false;
         body.Velocity = Vector2.Zero;
