@@ -1,325 +1,147 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-[gd_scene load_steps=21 format=3 uid="uid://b6tsnkamdsw36"]
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
-=======
-[gd_scene load_steps=24 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
-=======
-[gd_scene load_steps=25 format=3 uid="uid://b6tsnkamdsw36"]
->>>>>>> Stashed changes
+[gd_scene load_steps=21 format=3 uid="uid://bfa58y6ygi2ea"]
 
 [ext_resource type="Script" uid="uid://mtsaal6nt4w7" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
-[ext_resource type="Texture2D" uid="uid://dqnjwi5uwcl6g" path="res://Scenes/Player/Player.png" id="2_ft8w5"]
-[ext_resource type="Resource" uid="uid://db2io0t82ph5" path="res://Scenes/Player/Data/PlayerStats.tres" id="2_spxdj"]
-[ext_resource type="Texture2D" uid="uid://dcm7himxul4bn" path="res://Scenes/Player/Crosshair/crosshair.png" id="3_h54ih"]
-[ext_resource type="Script" uid="uid://dlebnfemjcchg" path="res://Scenes/Player/Crosshair/PlayerCrosshair.cs" id="3_ude3g"]
-[ext_resource type="Script" uid="uid://bw52gjgatpk01" path="res://Scenes/Player/Components/PlayerMovement.cs" id="5_i5acl"]
-[ext_resource type="Script" uid="uid://cvw6lla7c07d3" path="res://Scenes/Player/Components/PlayerShoot.cs" id="5_jmcll"]
-[ext_resource type="AudioStream" uid="uid://cl5ugvnwn12fc" path="res://Scenes/Player/Gun/deagle-shot-sound.mp3" id="6_4wape"]
-[ext_resource type="Script" uid="uid://b60nw3eg1htwg" path="res://Scenes/Player/Components/PlayerDash.cs" id="7_t26db"]
-[ext_resource type="Script" uid="uid://bawhhn1tq5ar4" path="res://Scenes/Player/Components/PlayerHealth.cs" id="8_0objx"]
-[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="8_ji083"]
-[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="9_0kmp4"]
-[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="9_i5acl"]
-[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="10_i5acl"]
-[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="14_esmjy"]
-[ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="15_6tu5v"]
-[ext_resource type="Script" uid="uid://b4dwolbvt8our" path="res://addons/godot_state_charts/history_state.gd" id="17_spxdj"]
+[ext_resource type="Resource" uid="uid://db2io0t82ph5" path="res://Scenes/Player/Data/PlayerStats.tres" id="2_0u84n"]
+[ext_resource type="Texture2D" uid="uid://dqnjwi5uwcl6g" path="res://Scenes/Player/Player.png" id="2_h54ih"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="3_4wape"]
+[ext_resource type="Script" path="res://Scenes/Player/Components/PlayerMovement.cs" id="3_epg6k"]
+[ext_resource type="Script" path="res://Scenes/Player/Components/PlayerDash.cs" id="4_0u84n"]
+[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="4_t26db"]
+[ext_resource type="Script" path="res://Scenes/Player/Components/PlayerHealth.cs" id="5_esmjy"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="5_fk5o5"]
+[ext_resource type="Script" path="res://Scenes/Player/Components/PlayerShoot.cs" id="6_6tu5v"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="6_825xp"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_fk5o5"]
+[ext_resource type="Script" uid="uid://b4dwolbvt8our" path="res://addons/godot_state_charts/history_state.gd" id="8_825xp"]
+[ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="9_825xp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ft8w5"]
-size = Vector2(58, 73)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ft8w5"]
-atlas = ExtResource("2_ft8w5")
+[sub_resource type="AtlasTexture" id="AtlasTexture_ude3g"]
+atlas = ExtResource("2_h54ih")
 region = Rect2(37, 3, 23, 29)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h54ih"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ft8w5"]
+radius = 35.171
 
-[sub_resource type="Resource" id="Resource_spxdj"]
-script = ExtResource("15_6tu5v")
-expression = "movement_abs > 0.1"
+[sub_resource type="Resource" id="Resource_825xp"]
+script = ExtResource("9_825xp")
+expression = "movement_abs > 0.001"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
-[sub_resource type="Resource" id="Resource_esmjy"]
-script = ExtResource("15_6tu5v")
-expression = "movement_abs <= 0.1"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+[sub_resource type="Resource" id="Resource_0kmp4"]
+script = ExtResource("9_825xp")
+expression = "movement_abs < 0.001"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
-[sub_resource type="Resource" id="Resource_0objx"]
-script = ExtResource("15_6tu5v")
-expression = "can_dash"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-metadata/_custom_type_script = "uid://le5w1cm0ul8p"
-
-<<<<<<< HEAD
-[sub_resource type="Resource" id="Resource_0objx"]
-script = ExtResource("15_6tu5v")
+[sub_resource type="Resource" id="Resource_ji083"]
+script = ExtResource("9_825xp")
 expression = "can_dash"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
-=======
-=======
->>>>>>> Stashed changes
+[sub_resource type="Resource" id="Resource_i5acl"]
+script = ExtResource("9_825xp")
+expression = "shoot_cd <= 0"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
->>>>>>> Stashed changes
-[sub_resource type="Resource" id="Resource_6tu5v"]
-script = ExtResource("15_6tu5v")
-expression = "shoot_cd <= 0.0"
-metadata/_custom_type_script = "uid://le5w1cm0ul8p"
-
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ft8w5")
-PlayerStats = ExtResource("2_spxdj")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_ft8w5")
+PlayerStats = ExtResource("2_0u84n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
-texture = SubResource("AtlasTexture_ft8w5")
+texture = SubResource("AtlasTexture_ude3g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ft8w5")
 
 [node name="Components" type="Node" parent="."]
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-[node name="PlayerCrosshair" type="Node" parent="."]
-=======
 [node name="PlayerMovement" type="Node" parent="Components"]
-script = ExtResource("5_i5acl")
-
-[node name="PlayerShoot" type="Node" parent="Components"]
-script = ExtResource("5_jmcll")
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-[node name="GunSound" type="AudioStreamPlayer2D" parent="Components/PlayerShoot"]
-stream = ExtResource("6_4wape")
+script = ExtResource("3_epg6k")
 
 [node name="PlayerDash" type="Node" parent="Components"]
-script = ExtResource("7_t26db")
-Stats = ExtResource("2_spxdj")
+script = ExtResource("4_0u84n")
+Stats = ExtResource("2_0u84n")
 
 [node name="PlayerHealth" type="Node" parent="Components"]
-script = ExtResource("8_0objx")
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-[node name="PlayerCrosshair" type="Node" parent="Components"]
->>>>>>> Stashed changes
-script = ExtResource("3_ude3g")
-
-[node name="Area2D" type="Area2D" parent="PlayerCrosshair"]
-
-[node name="Sprite2D" type="Sprite2D" parent="PlayerCrosshair/Area2D"]
-texture = ExtResource("3_h54ih")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCrosshair/Area2D"]
-shape = SubResource("CircleShape2D_h54ih")
-
-[node name="PlayerMovement" type="Node" parent="."]
-=======
-[node name="PlayerMovement" type="Node" parent="Components"]
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
-script = ExtResource("5_i5acl")
+script = ExtResource("5_esmjy")
 
 [node name="PlayerShoot" type="Node" parent="Components"]
-script = ExtResource("5_jmcll")
-ShootSfxPath = NodePath("GunSound")
-=======
->>>>>>> Stashed changes
-
-[node name="GunSound" type="AudioStreamPlayer2D" parent="Components/PlayerShoot"]
-stream = ExtResource("6_4wape")
-
-[node name="PlayerDash" type="Node" parent="Components"]
-script = ExtResource("7_t26db")
-Stats = ExtResource("2_spxdj")
-=======
->>>>>>> Stashed changes
-
-[node name="PlayerHealth" type="Node" parent="Components"]
-script = ExtResource("8_0objx")
-=======
->>>>>>> Stashed changes
-
-[node name="PlayerCrosshair" type="Node" parent="Components"]
-script = ExtResource("3_ude3g")
-
-[node name="Area2D" type="Area2D" parent="Components/PlayerCrosshair"]
-
-[node name="Sprite2D" type="Sprite2D" parent="Components/PlayerCrosshair/Area2D"]
-texture = ExtResource("3_h54ih")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/PlayerCrosshair/Area2D"]
-shape = SubResource("CircleShape2D_h54ih")
+script = ExtResource("6_6tu5v")
 
 [node name="StateChart" type="Node" parent="."]
-script = ExtResource("8_ji083")
+script = ExtResource("3_4wape")
 metadata/_custom_type_script = "uid://couw105c3bde4"
 
 [node name="Root" type="Node" parent="StateChart"]
-script = ExtResource("9_i5acl")
-metadata/_custom_type_script = "uid://c1vp0ojjvaby1"
+script = ExtResource("4_t26db")
 
 [node name="Movement" type="Node" parent="StateChart/Root"]
-script = ExtResource("9_0kmp4")
+script = ExtResource("5_fk5o5")
 initial_state = NodePath("Grounded")
 
 [node name="Grounded" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("9_0kmp4")
+script = ExtResource("5_fk5o5")
 initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("10_i5acl")
+script = ExtResource("6_825xp")
 
 [node name="To Run" type="Node" parent="StateChart/Root/Movement/Grounded/Idle"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Run")
 event = &"movement_update"
-guard = SubResource("Resource_spxdj")
+guard = SubResource("Resource_825xp")
 delay_in_seconds = "0.0"
 
 [node name="Run" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("10_i5acl")
+script = ExtResource("6_825xp")
 
 [node name="To Idle" type="Node" parent="StateChart/Root/Movement/Grounded/Run"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Idle")
 event = &"movement_update"
-guard = SubResource("Resource_esmjy")
+guard = SubResource("Resource_0kmp4")
 delay_in_seconds = "0.0"
 
 [node name="HistoryState" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("17_spxdj")
+script = ExtResource("8_825xp")
 default_state = NodePath("../Idle")
 
 [node name="To Dash" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Dash")
 event = &"dash_pressed"
-guard = SubResource("Resource_0objx")
+guard = SubResource("Resource_ji083")
 delay_in_seconds = "0.0"
 
 [node name="Dash" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("10_i5acl")
+script = ExtResource("6_825xp")
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 [node name="To Grounded" type="Node" parent="StateChart/Root/Movement/Dash"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Grounded/HistoryState")
 event = &"dash_done"
 delay_in_seconds = "0.0"
-
->>>>>>> Stashed changes
-=======
-[node name="To Grounded" type="Node" parent="StateChart/Root/Movement/Dash"]
-script = ExtResource("14_esmjy")
-to = NodePath("../../Grounded/HistoryState")
-event = &"dash_done"
-delay_in_seconds = "0.0"
-
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
-[node name="stunned-knockback-etc" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("10_i5acl")
 
 [node name="Combat" type="Node" parent="StateChart/Root"]
-script = ExtResource("9_0kmp4")
+script = ExtResource("5_fk5o5")
 initial_state = NodePath("Aim")
-metadata/_custom_type_script = "uid://jk2jm1g6q853"
 
 [node name="Aim" type="Node" parent="StateChart/Root/Combat"]
-script = ExtResource("10_i5acl")
+script = ExtResource("6_825xp")
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-[node name="Shoot" type="Node" parent="StateChart/Root/Combat"]
-script = ExtResource("10_i5acl")
-
-=======
 [node name="To Shoot" type="Node" parent="StateChart/Root/Combat/Aim"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Shoot")
 event = &"fire_pressed"
-guard = SubResource("Resource_6tu5v")
+guard = SubResource("Resource_i5acl")
 delay_in_seconds = "0.0"
 
 [node name="Shoot" type="Node" parent="StateChart/Root/Combat"]
-script = ExtResource("10_i5acl")
+script = ExtResource("6_825xp")
 
 [node name="To Aim" type="Node" parent="StateChart/Root/Combat/Shoot"]
-script = ExtResource("14_esmjy")
+script = ExtResource("7_fk5o5")
 to = NodePath("../../Aim")
 event = &"fire_released"
 delay_in_seconds = "0.0"
-
->>>>>>> Stashed changes
-=======
-[node name="To Shoot" type="Node" parent="StateChart/Root/Combat/Aim"]
-script = ExtResource("14_esmjy")
-to = NodePath("../../Shoot")
-event = &"fire_pressed"
-guard = SubResource("Resource_6tu5v")
-delay_in_seconds = "0.0"
-
-[node name="Shoot" type="Node" parent="StateChart/Root/Combat"]
-script = ExtResource("10_i5acl")
-
-[node name="To Aim" type="Node" parent="StateChart/Root/Combat/Shoot"]
-script = ExtResource("14_esmjy")
-to = NodePath("../../Aim")
-event = &"fire_released"
-delay_in_seconds = "0.0"
-
->>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
-[node name="reload-cooldown-etc" type="Node" parent="StateChart/Root/Combat"]
-script = ExtResource("10_i5acl")
