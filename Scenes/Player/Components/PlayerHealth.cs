@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 // PlayerHealth.cs
+=======
+>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
 using Godot;
 
 public partial class PlayerHealth : Node
 {
+<<<<<<< HEAD
     [Export] public int MaxHp = 3;
     public int Hp { get; private set; }
 
@@ -12,5 +16,27 @@ public partial class PlayerHealth : Node
     {
         Hp = Mathf.Max(0, Hp - amount);
         if (Hp == 0) GD.Print("[PlayerHealth] Dead");
+=======
+    [Export] public PlayerStats Stats;
+    public int Current { get; private set; }
+
+    [Signal] public delegate void DiedEventHandler();
+
+    public override void _Ready()
+    {
+        if (Stats == null) GD.PushWarning("PlayerHealth: Stats not set.");
+        Current = Stats?.MaxHealth ?? 5;
+    }
+
+    public void Damage(int amount)
+    {
+        Current = Mathf.Max(Current - amount, 0);
+        if (Current <= 0) EmitSignal(SignalName.Died);
+    }
+
+    public void Heal(int amount)
+    {
+        Current = Mathf.Min(Current + amount, Stats?.MaxHealth ?? 5);
+>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
     }
 }
