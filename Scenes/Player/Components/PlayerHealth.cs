@@ -1,11 +1,16 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerHealth.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerHealth.cs
+>>>>>>> Stashed changes
 using Godot;
 
 public partial class PlayerHealth : Node
 {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     [Export] public int MaxHp = 3;
     public int Hp { get; private set; }
@@ -19,17 +24,16 @@ public partial class PlayerHealth : Node
 =======
     [Export] public PlayerStats Stats;
     public int Current { get; private set; }
+=======
+    [Export] public int MaxHp = 3;
+    public int Hp { get; private set; }
+>>>>>>> Stashed changes
 
-    [Signal] public delegate void DiedEventHandler();
-
-    public override void _Ready()
-    {
-        if (Stats == null) GD.PushWarning("PlayerHealth: Stats not set.");
-        Current = Stats?.MaxHealth ?? 5;
-    }
+    public override void _Ready() => Hp = MaxHp;
 
     public void Damage(int amount)
     {
+<<<<<<< Updated upstream
         Current = Mathf.Max(Current - amount, 0);
         if (Current <= 0) EmitSignal(SignalName.Died);
     }
@@ -38,5 +42,9 @@ public partial class PlayerHealth : Node
     {
         Current = Mathf.Min(Current + amount, Stats?.MaxHealth ?? 5);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        Hp = Mathf.Max(0, Hp - amount);
+        if (Hp == 0) GD.Print("[PlayerHealth] Dead");
+>>>>>>> Stashed changes
     }
 }

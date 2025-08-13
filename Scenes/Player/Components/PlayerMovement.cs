@@ -6,6 +6,7 @@ public partial class PlayerMovement : Node
     [Export] public int SpriteWidth = 80;
     [Export] public int SpriteHeight = 50;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     public float Speed { get; set; } = 220f;
 
@@ -20,6 +21,9 @@ public partial class PlayerMovement : Node
 ========
     // This will be set from PlayerStats via Player.cs
     public float Speed { get; set; }
+=======
+    public float Speed { get; set; } = 220f;
+>>>>>>> Stashed changes
 
 >>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea:Scenes/Player/Components/PlayerMovement.cs
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
@@ -31,6 +35,7 @@ public partial class PlayerMovement : Node
 
     public void Stop(CharacterBody2D body)
     {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         var v = body.Velocity;
         v.X = 0;
@@ -38,11 +43,16 @@ public partial class PlayerMovement : Node
         var v = body.Velocity; 
         v.X = 0; 
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        var v = body.Velocity;
+        v.X = 0;
+>>>>>>> Stashed changes
         body.Velocity = v;
     }
 
     public void Run(CharacterBody2D body, float input, double delta)
     {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         var v = body.Velocity;
         v.X = input * Speed;
@@ -71,6 +81,13 @@ public partial class PlayerMovement : Node
         body.Velocity = v;
     }
 
+=======
+        var v = body.Velocity;
+        v.X = input * Speed;
+        body.Velocity = v;
+    }
+
+>>>>>>> Stashed changes
     public void ClampToScreen(CharacterBody2D body)
     {
         float half = SpriteWidth / 2f;
@@ -79,6 +96,7 @@ public partial class PlayerMovement : Node
         var p = body.Position;
         p.X = Mathf.Clamp(p.X, minX, maxX);
         body.Position = p;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 >>>>>>> Stashed changes:Scenes/Player/Components/PlayerMovement.cs
@@ -86,5 +104,7 @@ public partial class PlayerMovement : Node
         body.Velocity = velocity;
 >>>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea:Scenes/Player/Components/PlayerMovement.cs
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+>>>>>>> Stashed changes
     }
 }

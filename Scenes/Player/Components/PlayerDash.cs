@@ -1,12 +1,17 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // PlayerDash.cs (drop-in replacement of your class)
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// PlayerDash.cs (drop-in replacement of your class)
+>>>>>>> Stashed changes
 using Godot;
 using System;
 
 public partial class PlayerDash : Node
 {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     [Export] public PlayerStats Stats;
     [Export] public int MaxCharges = 2;
@@ -46,35 +51,46 @@ public partial class PlayerDash : Node
     [Export] public float RechargeTime = 1.0f;
 
     [Export] public bool RequireInputDirection = false;
+=======
+    [Export] public PlayerStats Stats;
+    [Export] public int MaxCharges = 2;
+>>>>>>> Stashed changes
 
     [Signal] public delegate void ChargesChangedEventHandler(int current, int max);
-    [Signal] public delegate void DashStartedEventHandler();
-    [Signal] public delegate void DashEndedEventHandler();
+
+    private float _dashDistance;
+    private float _dashSpeed;
+    private float _rechargeTime;
 
     private bool _active;
-    private float _left;              // distance left to travel
-    private Vector2 _direction;       // normalized (±1, 0)
+    private Vector2 _dir;       // (-1,0) or (1,0)
+    private float _travelled;   // px
+    private Vector2 _lastPos;
 
     private int _charges;
     private float _rechargeTimer;
-
-    private float _dashTimer;         // safety cap
-    private Vector2 _lastPos;         // to measure actual distance moved
-
     private Action _onFinished;
 
     public bool IsDashing => _active;
-    public int Charges => _charges;
+    public int  Charges   => _charges;
 
     public override void _Ready()
     {
+<<<<<<< Updated upstream
         _charges = Mathf.Max(1, MaxCharges);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        ApplyStats();
+        _charges = MaxCharges;
+>>>>>>> Stashed changes
         _rechargeTimer = 0f;
         EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
     }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
     public void SetStats(PlayerStats stats)
     {
         Stats = stats;
@@ -97,6 +113,7 @@ public partial class PlayerDash : Node
         _rechargeTime = Mathf.Max(0.01f, Stats.DashCooldown);
     }
 
+<<<<<<< Updated upstream
     public override void _PhysicsProcess(double delta)
     {
         // Recharge
@@ -107,15 +124,22 @@ public partial class PlayerDash : Node
             {
                 _rechargeTimer -= _rechargeTime;
 =======
+=======
+>>>>>>> Stashed changes
     public override void _PhysicsProcess(double delta)
     {
+        // Recharge
         if (_charges < MaxCharges)
         {
             _rechargeTimer += (float)delta;
-            while (_charges < MaxCharges && _rechargeTimer >= RechargeTime)
+            while (_charges < MaxCharges && _rechargeTimer >= _rechargeTime)
             {
+<<<<<<< Updated upstream
                 _rechargeTimer -= RechargeTime;
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+                _rechargeTimer -= _rechargeTime;
+>>>>>>> Stashed changes
                 _charges++;
                 EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
             }
@@ -124,6 +148,7 @@ public partial class PlayerDash : Node
 
     public bool CanStartDash() => !_active && _charges > 0;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     public void StartDash(CharacterBody2D body, float axis, Action onFinished)
     {
@@ -169,82 +194,59 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
 }
 =======
     public void StartDash(CharacterBody2D body, float inputAxis, Action onFinished)
+=======
+    public void StartDash(CharacterBody2D body, float axis, Action onFinished)
+>>>>>>> Stashed changes
     {
+        GD.Print($"[StartDash] pre: active={_active}, charges={_charges}, axis={axis}");
         if (!CanStartDash()) return;
-        if (RequireInputDirection && Mathf.IsZeroApprox(inputAxis)) return;
 
-        _charges = Mathf.Max(0, _charges - 1);
-        GD.Print($"[Dash] start; charges={_charges}/{MaxCharges}");
+        float sign = Mathf.Sign(axis);
+        if (Mathf.IsZeroApprox(sign)) return; // need direction
+
+        _charges--;
+        _rechargeTimer = 0f;
         EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
 
         _active = true;
+        _travelled = 0f;
+        _dir = new Vector2(sign, 0f);
         _onFinished = onFinished;
 
-        _left = Mathf.Max(0f, DashDistance);
-        float sign = Mathf.Sign(Mathf.IsZeroApprox(inputAxis) ? 1f : inputAxis);
-        _direction = new Vector2(sign, 0f);
-
-        _dashTimer = 0f;
         _lastPos = body.GlobalPosition;
-
-        // set initial velocity (MoveAndSlide happens in Player)
-        body.Velocity = PreserveYVelocity
-            ? new Vector2(_direction.X * DashSpeed, body.Velocity.Y)
-            : _direction * DashSpeed;
-
-        EmitSignal(SignalName.DashStarted);
+        body.Velocity = _dir * _dashSpeed;
     }
 
-    /// Call BEFORE MoveAndSlide() each physics frame while dashing.
-    public void TickDash(CharacterBody2D body, double delta)
+    public void TickDashPre(CharacterBody2D body)
+{
+    if (!_active) return;
+    body.Velocity = _dir * _dashSpeed;
+}
+
+public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
+{
+    if (!_active) return;
+
+    float step = (body.GlobalPosition - prevPos).Length();
+    _travelled += step;
+
+    bool blocked = step < 0.5f;
+    if (_travelled >= _dashDistance || blocked)
     {
-        if (!_active) return;
-
-        _dashTimer += (float)delta;
-        if (_dashTimer >= MaxDashTime)
-        {
-            EndDash(body);
-            _onFinished?.Invoke();
-            _onFinished = null;
-            return;
-        }
-
-        // keep applying dash velocity; Player will MoveAndSlide() once
-        body.Velocity = PreserveYVelocity
-            ? new Vector2(_direction.X * DashSpeed, body.Velocity.Y)
-            : _direction * DashSpeed;
+        EndDash(body);
+        _onFinished?.Invoke();
+        _onFinished = null;
     }
-
-    /// Call AFTER MoveAndSlide() each physics frame while dashing.
-    public void AfterSlide(CharacterBody2D body)
-    {
-        if (!_active) return;
-
-        float moved = body.GlobalPosition.DistanceTo(_lastPos);
-        _lastPos = body.GlobalPosition;
-
-        // if we bounced into a wall, movement might be tiny
-        if (StopOnWallHit && moved < 0.5f)
-        {
-            EndDash(body);
-            _onFinished?.Invoke();
-            _onFinished = null;
-            return;
-        }
-
-        _left -= moved;
-        if (_left <= 0f)
-        {
-            EndDash(body);
-            _onFinished?.Invoke();
-            _onFinished = null;
-        }
-    }
+<<<<<<< Updated upstream
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+}
+>>>>>>> Stashed changes
 
     public void EndDash(CharacterBody2D body)
     {
         if (!_active) return;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         _active = false;
         body.Velocity = Vector2.Zero;
@@ -275,5 +277,9 @@ public void TickDashPost(CharacterBody2D body, Vector2 prevPos)
         _charges = clamped;
         EmitSignal(SignalName.ChargesChanged, _charges, MaxCharges);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+        _active = false;
+        body.Velocity = Vector2.Zero;
+>>>>>>> Stashed changes
     }
 }

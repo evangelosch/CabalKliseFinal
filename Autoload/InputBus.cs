@@ -1,7 +1,11 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 // InputBus.cs
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+// InputBus.cs
+>>>>>>> Stashed changes
 using Godot;
 
 public partial class InputBus : Node
@@ -11,6 +15,7 @@ public partial class InputBus : Node
     [Signal] public delegate void FirePressedEventHandler();
     [Signal] public delegate void FireReleasedEventHandler();
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     private float _lastAxis = 0f;
 
@@ -34,31 +39,35 @@ public partial class InputBus : Node
             EmitSignal(SignalName.FireReleased);
 =======
     private float _axis;
+=======
+    private float _lastAxis = 0f;
+>>>>>>> Stashed changes
 
     public override void _PhysicsProcess(double delta)
     {
-        float axis = 0f;
-        if (Input.IsActionPressed("move_left"))  axis -= 1f;
-        if (Input.IsActionPressed("move_right")) axis += 1f;
-        axis = Mathf.Clamp(axis, -1f, 1f);
-
-        if (!Mathf.IsEqualApprox(axis, _axis))
+        // Change these actions to match your InputMap (Project Settings → Input Map)
+        float axis = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
+        if (!Mathf.IsEqualApprox(axis, _lastAxis))
         {
-            _axis = axis;
-            EmitSignal(SignalName.MoveAxis, _axis);
+            _lastAxis = axis;
+            EmitSignal(SignalName.MoveAxis, axis);
         }
-    }
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event.IsActionPressed("dash"))
-        {
-            GD.Print("[InputBus] Dash pressed");
+        if (Input.IsActionJustPressed("dash"))
             EmitSignal(SignalName.DashPressed);
+<<<<<<< Updated upstream
         }
         
         if (@event.IsActionPressed("fire")) EmitSignal(SignalName.FirePressed);
         if (@event.IsActionReleased("fire")) EmitSignal(SignalName.FireReleased);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+
+        if (Input.IsActionJustPressed("fire"))
+            EmitSignal(SignalName.FirePressed);
+
+        if (Input.IsActionJustReleased("fire"))
+            EmitSignal(SignalName.FireReleased);
+>>>>>>> Stashed changes
     }
 }

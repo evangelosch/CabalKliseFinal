@@ -5,7 +5,11 @@ using Godot;
 using GodotStateCharts; // IMPORTANT: plugin’s C# namespace
 =======
 using GodotStateCharts;
+<<<<<<< Updated upstream
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+using System;
+>>>>>>> Stashed changes
 
 public partial class Player : CharacterBody2D
 {
@@ -13,6 +17,7 @@ public partial class Player : CharacterBody2D
     [Export] public Weapon StartingWeapon;
 
     private StateChart _stateChart;
+<<<<<<< Updated upstream
     private PlayerMovement _move;
 <<<<<<< HEAD
     private PlayerInput _input;
@@ -30,10 +35,14 @@ public partial class Player : CharacterBody2D
     private PlayerMovement _movement;
 =======
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+    private PlayerMovement _movement;
+>>>>>>> Stashed changes
     private PlayerDash _dash;
     private PlayerShoot _shoot;
     private PlayerHealth _health;
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     private bool _dashRequested;
     private float _axis;
@@ -70,24 +79,32 @@ public partial class Player : CharacterBody2D
         _shoot      = GetNode<PlayerShoot>("Components/PlayerShoot");
         _health     = GetNode<PlayerHealth>("Components/PlayerHealth");
 =======
+=======
+    private bool _dashRequested;
+>>>>>>> Stashed changes
     private float _axis;
+
+    private const string EVT_MOVE_UPDATE = "movement_update";
+    private const string EVT_DASH_PRESS  = "dash_pressed";
+    private const string EVT_DASH_DONE   = "dash_done";
+    private const string EVT_FIRE_PRESS  = "fire_pressed";
+    private const string EVT_FIRE_REL    = "fire_released";
 
     public override void _Ready()
     {
         _stateChart = StateChart.Of(GetNode("StateChart"));
-        _move   = GetNode<PlayerMovement>("Components/PlayerMovement");
-        _dash   = GetNode<PlayerDash>("Components/PlayerDash");
-        _shoot  = GetNode<PlayerShoot>("Components/PlayerShoot");
-        _health = GetNode<PlayerHealth>("Components/PlayerHealth");
+        _movement   = GetNode<PlayerMovement>("Components/PlayerMovement");
+        _dash       = GetNode<PlayerDash>("Components/PlayerDash");
+        _shoot      = GetNode<PlayerShoot>("Components/PlayerShoot");
+        _health     = GetNode<PlayerHealth>("Components/PlayerHealth");
 
-        // Inject data from PlayerStats
         if (PlayerStats != null)
         {
-            _move.Speed        = PlayerStats.MoveSpeed;
-            _dash.DashDistance = PlayerStats.DashDistance;
-            _dash.DashSpeed    = PlayerStats.DashSpeed;
+            _movement.Speed = PlayerStats.MoveSpeed;
+            _dash.SetStats(PlayerStats);
         }
 
+<<<<<<< Updated upstream
         // if (StartingWeapon != null)
         //     _shoot.Equip(StartingWeapon);
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
@@ -122,63 +139,91 @@ public partial class Player : CharacterBody2D
         _stateChart.SetExpressionProperty("can_dash", _dash.CanStartDash());
 
         // Expose shooting cooldown for Aim -> Shoot guard (shoot_cd <= 0)
+=======
+        if (StartingWeapon != null)
+            _shoot.Equip(StartingWeapon);
+
+        _movement.SpawnAtBottom(this);
+
+        _stateChart.SetExpressionProperty("movement_input", 0f);
+        _stateChart.SetExpressionProperty("movement_abs", 0f);
+        _stateChart.SetExpressionProperty("allow_dash_shoot", true);
+        _stateChart.SetExpressionProperty("can_dash", _dash.Charges > 0);
+>>>>>>> Stashed changes
         _stateChart.SetExpressionProperty("shoot_cd", 0f);
 
-        // --- InputBus hookups ---
         var inputBus = GetNode<InputBus>("/root/InputBus");
-        inputBus.Connect(InputBus.SignalName.MoveAxis,     Callable.From<float>(OnMoveAxis));
-        inputBus.Connect(InputBus.SignalName.DashPressed,  Callable.From(() => _stateChart.SendEvent("dash_press")));
-        inputBus.Connect(InputBus.SignalName.FirePressed,  Callable.From(() => _stateChart.SendEvent("fire_press")));
-        inputBus.Connect(InputBus.SignalName.FireReleased, Callable.From(() => _stateChart.SendEvent("fire_release")));
+        inputBus.MoveAxis     += OnMoveAxis;
+        inputBus.DashPressed  += OnDashPressed;
+        inputBus.FirePressed  += OnFirePressed;
+        inputBus.FireReleased += OnFireReleased;
 
-        // Keep can_dash in sync with charges
-        _dash.Connect(PlayerDash.SignalName.ChargesChanged,
-            Callable.From<int, int>((current, max) =>
-            {
-                _stateChart.SetExpressionProperty("can_dash", current > 0);
-            }));
+        _dash.ChargesChanged += OnDashChargesChanged;
 
-        // --- State connections ---
-        // Movement
+        // Movement states
         ConnectState("StateChart/Root/Movement/Grounded/Idle", enter: MvEnterIdle, physics: MvUpdateIdle);
         ConnectState("StateChart/Root/Movement/Grounded/Run",  enter: MvEnterRun,  physics: MvUpdateRun);
 
-        // Dash: we start dash on Enter, but physics tick is handled centrally in _PhysicsProcess.
-        ConnectState("StateChart/Root/Movement/Dash", enter: MvEnterDash, physics: MvUpdateDash, exit: MvExitDash);
+        // Dash state
+        ConnectState("StateChart/Root/Movement/Dash",
+            enter:   MvEnterDash,
+            physics: MvUpdateDash,
+            exit:    MvExitDash);
 
-        // Combat
+        // Combat states
         ConnectState("StateChart/Root/Combat/Aim",   physics: CbUpdateAim);
         ConnectState("StateChart/Root/Combat/Shoot", enter: CbEnterShooting, physics: CbUpdateShooting, exit: CbExitShooting);
     }
 
-   public override void _PhysicsProcess(double delta)
-{
-    if (_dash.IsDashing)
+    public override void _ExitTree()
     {
-        _dash.TickDash(this, delta);  // sets velocity
-        MoveAndSlide();               // do the move once
-        _dash.AfterSlide(this);       // consume actual pixels moved / detect wall
-        return;
+        var inputBus = GetNodeOrNull<InputBus>("/root/InputBus");
+        if (inputBus != null)
+        {
+            inputBus.MoveAxis     -= OnMoveAxis;
+            inputBus.DashPressed  -= OnDashPressed;
+            inputBus.FirePressed  -= OnFirePressed;
+            inputBus.FireReleased -= OnFireReleased;
+        }
+        if (IsInstanceValid(_dash))
+            _dash.ChargesChanged -= OnDashChargesChanged;
     }
 
-    // normal movement:
-    MoveAndSlide();
-}
+    public override void _PhysicsProcess(double delta)
+    {
+        _stateChart.SetExpressionProperty("can_dash", _dash.Charges > 0);
 
+        if (_dash.IsDashing)
+        {
+            var prev = GlobalPosition;       // capture BEFORE moving
+            _dash.TickDashPre(this);         // set dash velocity
+            MoveAndSlide();                  // now we actually move
+            _dash.TickDashPost(this, prev);  // measure AFTER moving, decide end
+            return;
+        }
 
-    // ------- Input → chart -------
+        MoveAndSlide();
+        _movement.ClampToScreen(this);
+    }
+
+    // -------- Input handlers
     private void OnMoveAxis(float axis)
     {
         _axis = axis;
-        _stateChart.SetExpressionProperty("move_input", _axis);
-        _stateChart.SetExpressionProperty("move_abs", Mathf.Abs(_axis));
-        _stateChart.SendEvent("move_update");
+        _stateChart.SetExpressionProperty("movement_input", _axis);
+        _stateChart.SetExpressionProperty("movement_abs", Mathf.Abs(_axis));
+        _stateChart.SendEvent(EVT_MOVE_UPDATE);
     }
 
-    // ------- Movement callbacks -------
-    private void MvEnterIdle()                   => _move.Stop(this);
-    private void MvUpdateIdle(double dt)         { /* idle keeps velocity zeroed by _move.Stop */ }
+    private void OnDashPressed()
+    {
+        _axis = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
+        GD.Print($"[InputBus] Dash pressed, axis={_axis}");
+        _dashRequested = true;
+        _stateChart.SendEvent(EVT_DASH_PRESS);
+    }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     private void OnEnterRun() { /* start run anim if needed */ }
     private void OnUpdateRun(double dt) => _move.Run(this, _axis, dt);
@@ -271,6 +316,8 @@ public partial class Player : CharacterBody2D
         _stateChart.SendEvent(EVT_DASH_PRESS);
     }
 
+=======
+>>>>>>> Stashed changes
     private void OnFirePressed()  => _stateChart.SendEvent(EVT_FIRE_PRESS);
     private void OnFireReleased() => _stateChart.SendEvent(EVT_FIRE_REL);
 
@@ -283,6 +330,7 @@ public partial class Player : CharacterBody2D
 
     private void MvEnterRun()                    { /* start run anim if you want */ }
     private void MvUpdateRun(double dt)          => _movement.Run(this, _axis, dt);
+<<<<<<< Updated upstream
 
     private void MvEnterDash()
     {
@@ -313,26 +361,40 @@ public partial class Player : CharacterBody2D
 =======
     private void MvEnterRun()                    { /* start run anim if desired */ }
     private void MvUpdateRun(double dt)          => _move.Run(this, _axis, dt); // sets Velocity only
+=======
+>>>>>>> Stashed changes
 
     private void MvEnterDash()
     {
-        // StartDash consumes a charge and will emit ChargesChanged (updating can_dash)
+         GD.Print("[MvEnterDash] entered Dash state");
+        if (!_dashRequested || !_dash.CanStartDash())
+        {
+            GD.Print("[Player] Dash ignored — not requested or cannot start");
+            _stateChart.SendEvent(EVT_DASH_DONE);
+            return;
+        }
+
+        _dashRequested = false;
         GD.Print("[Player] Starting dash with axis: ", _axis);
-        _dash.StartDash(this, _axis, () => _stateChart.SendEvent("dash_done"));
+        _dash.StartDash(this, _axis, () => _stateChart.SendEvent(EVT_DASH_DONE));
+
+        if (!_dash.IsDashing)
+        {
+            GD.Print("[Player] Dash didn't start (no direction/charges) — bouncing");
+            _stateChart.SendEvent(EVT_DASH_DONE);
+        }
     }
 
-    // Important: leave dash physics empty — _PhysicsProcess drives dash each frame.
-    private void MvUpdateDash(double dt) { }
+    private void MvUpdateDash(double dt) { /* dash moved centrally in _PhysicsProcess */ }
 
-    private void MvExitDash()
-    {
-        _dash.EndDash(this);
-        // No per-dash cooldown — PlayerDash recharges continuously.
-        // can_dash flips back via ChargesChanged when a charge refills.
-    }
+    private void MvExitDash() => _dash.EndDash(this);
 
+<<<<<<< Updated upstream
     // ------- Combat callbacks (cooldown-aware) -------
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+    // -------- Combat callbacks
+>>>>>>> Stashed changes
     private void CbUpdateAim(double dt)
     {
         _shoot.TickAim(dt);
@@ -350,19 +412,26 @@ public partial class Player : CharacterBody2D
     {
         _shoot.TickShooting(dt);
         _stateChart.SetExpressionProperty("shoot_cd", _shoot.Cooldown);
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
         // FireReleased drives exit to Aim.
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+>>>>>>> Stashed changes
     }
 
     private void CbExitShooting() => _shoot.EndBurst();
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     // -------- helper
 =======
     // ------- Helper to connect a state node directly -------
 >>>>>>> 4b0dc389250f29563fe0bfcbb72737fa1564e3ea
+=======
+    // -------- helper
+>>>>>>> Stashed changes
     private void ConnectState(string nodePath, System.Action enter = null,
                               System.Action<double> physics = null,
                               System.Action exit = null)
