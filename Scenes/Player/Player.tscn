@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bfa58y6ygi2ea"]
+[gd_scene load_steps=24 format=3 uid="uid://bfa58y6ygi2ea"]
 
 [ext_resource type="Script" uid="uid://mtsaal6nt4w7" path="res://Scenes/Player/Player.cs" id="1_ft8w5"]
 [ext_resource type="Resource" uid="uid://db2io0t82ph5" path="res://Scenes/Player/Data/PlayerStats.tres" id="2_0u84n"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="3_4wape"]
 [ext_resource type="Script" path="res://Scenes/Player/Components/PlayerMovement.cs" id="3_epg6k"]
 [ext_resource type="Script" path="res://Scenes/Player/Components/PlayerDash.cs" id="4_0u84n"]
+[ext_resource type="Script" uid="uid://bvn7wjn0bq5a0" path="res://Scenes/Player/Crosshair.cs" id="4_6tu5v"]
+[ext_resource type="Texture2D" uid="uid://cu7ohc1517g0m" path="res://Scenes/Player/Crosshair/crosshair060.png" id="4_esmjy"]
 [ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="4_t26db"]
 [ext_resource type="Script" path="res://Scenes/Player/Components/PlayerHealth.cs" id="5_esmjy"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="5_fk5o5"]
@@ -14,6 +16,7 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_fk5o5"]
 [ext_resource type="Script" uid="uid://b4dwolbvt8our" path="res://addons/godot_state_charts/history_state.gd" id="8_825xp"]
 [ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="9_825xp"]
+[ext_resource type="AudioStream" uid="uid://cl5ugvnwn12fc" path="res://Scenes/Player/Gun/deagle-shot-sound.mp3" id="10_spxdj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ude3g"]
 atlas = ExtResource("2_h54ih")
@@ -53,6 +56,15 @@ texture = SubResource("AtlasTexture_ude3g")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ft8w5")
 
+[node name="Crosshair" type="Node2D" parent="."]
+script = ExtResource("4_6tu5v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Crosshair"]
+texture = ExtResource("4_esmjy")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Crosshair"]
+stream = ExtResource("10_spxdj")
+
 [node name="Components" type="Node" parent="."]
 
 [node name="PlayerMovement" type="Node" parent="Components"]
@@ -67,6 +79,9 @@ script = ExtResource("5_esmjy")
 
 [node name="PlayerShoot" type="Node" parent="Components"]
 script = ExtResource("6_6tu5v")
+CrosshairPath = NodePath("../../Crosshair")
+ShotSfx = ExtResource("10_spxdj")
+ShotVolumeDb = 3.0
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_4wape")

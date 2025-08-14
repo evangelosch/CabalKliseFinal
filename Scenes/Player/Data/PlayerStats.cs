@@ -4,7 +4,7 @@ using Godot;
 public partial class PlayerStats : Resource
 {
     [ExportCategory("Movement")]
-    [Export] public float MoveSpeed    { get; set; } = 220f;
+    [Export] public float MoveSpeed    { get; set; } = 420f;
 
     [ExportCategory("Dash")]
     [Export] public float DashDistance { get; set; } = 160f; // px

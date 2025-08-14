@@ -26,6 +26,7 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
+        Input.MouseMode = Input.MouseModeEnum.Hidden;
         _stateChart = StateChart.Of(GetNode("StateChart"));
         _movement   = GetNode<PlayerMovement>("Components/PlayerMovement");
         _dash       = GetNode<PlayerDash>("Components/PlayerDash");
