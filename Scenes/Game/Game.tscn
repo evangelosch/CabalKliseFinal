@@ -7,16 +7,11 @@
 [node name="Game" type="Node2D"]
 script = ExtResource("1_rdw05")
 
-[node name="StateChartDebugger" parent="." instance=ExtResource("2_xbxml")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 710.0
-offset_top = 194.0
-offset_right = 1066.0
-offset_bottom = 621.0
-grow_horizontal = 1
-grow_vertical = 1
-initial_node_to_watch = NodePath("../Player")
-
 [node name="Player" parent="." instance=ExtResource("2_gwu2e")]
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("2_xbxml")]
+offset_left = 957.0
+offset_top = 256.0
+offset_right = 1277.0
+offset_bottom = 617.0
+initial_node_to_watch = NodePath("../Player")

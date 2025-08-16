@@ -62,9 +62,6 @@ script = ExtResource("4_6tu5v")
 [node name="Sprite2D" type="Sprite2D" parent="Crosshair"]
 texture = ExtResource("4_esmjy")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Crosshair"]
-stream = ExtResource("10_spxdj")
-
 [node name="Components" type="Node" parent="."]
 
 [node name="PlayerMovement" type="Node" parent="Components"]
