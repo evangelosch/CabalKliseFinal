@@ -7,6 +7,11 @@ public partial class Crosshair : Node2D
     [Export] public Vector2 Margin = new(8, 8);
     [Export(PropertyHint.Range, "0,20,0.1")] public float Smooth = 0f; // 0 = instant
 
+    public override void _Ready()
+    {
+        ZAsRelative = false; // use global Z order
+        ZIndex = 1000;       // higher than enemies/backgrounds
+    }
     public override void _Process(double dt)
     {
         Vector2 target = GetGlobalMousePosition();

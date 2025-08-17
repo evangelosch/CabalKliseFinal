@@ -19,10 +19,10 @@ public partial class RoomFight1 : Node2D
                 enemy.Position = marker.Position;
 
                 // Set direction based on marker position
-                if (enemy is Enemy enemyScript)
-                {
-                    enemyScript.Direction = marker.Position.X < centerX ? 1 : -1;
-                }
+                // if (enemy is Enemy enemyScript)
+                // {
+                //     enemyScript.Direction = marker.Position.X < centerX ? 1 : -1;
+                // }
 
                 AddChild(enemy);
             }

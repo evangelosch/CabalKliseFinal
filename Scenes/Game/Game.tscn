@@ -1,17 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3n84q4p6cb2p"]
+[gd_scene load_steps=6 format=3 uid="uid://b3n84q4p6cb2p"]
 
 [ext_resource type="Script" uid="uid://bcqokdsulrfhi" path="res://Scenes/Game/Game.cs" id="1_rdw05"]
 [ext_resource type="PackedScene" uid="uid://bfa58y6ygi2ea" path="res://Scenes/Player/Player.tscn" id="2_gwu2e"]
+[ext_resource type="Script" uid="uid://ift01fg8m6y" path="res://Scenes/Game/EnemySpawner.cs" id="2_ln2h6"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_xbxml"]
+[ext_resource type="PackedScene" uid="uid://nm4vfjp0l71l" path="res://Scenes/Enemy/Enemy.tscn" id="3_y3kpf"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_rdw05")
 
+[node name="Node" type="Node" parent="."]
+script = ExtResource("2_ln2h6")
+EnemyScene = ExtResource("3_y3kpf")
+
 [node name="Player" parent="." instance=ExtResource("2_gwu2e")]
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("2_xbxml")]
-offset_left = 957.0
-offset_top = 256.0
-offset_right = 1277.0
-offset_bottom = 617.0
+offset_left = 908.0
+offset_top = 342.0
+offset_right = 1228.0
+offset_bottom = 703.0
 initial_node_to_watch = NodePath("../Player")

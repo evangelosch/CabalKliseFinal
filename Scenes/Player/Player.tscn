@@ -18,7 +18,7 @@
 [ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="9_825xp"]
 [ext_resource type="AudioStream" uid="uid://cl5ugvnwn12fc" path="res://Scenes/Player/Gun/deagle-shot-sound.mp3" id="10_spxdj"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ude3g"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_spxdj"]
 atlas = ExtResource("2_h54ih")
 region = Rect2(37, 3, 23, 29)
 
@@ -51,7 +51,7 @@ PlayerStats = ExtResource("2_0u84n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
-texture = SubResource("AtlasTexture_ude3g")
+texture = SubResource("AtlasTexture_spxdj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ft8w5")

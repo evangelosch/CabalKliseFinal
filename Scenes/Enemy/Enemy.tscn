@@ -1,22 +1,120 @@
-[gd_scene load_steps=5 format=3 uid="uid://nm4vfjp0l71l"]
+[gd_scene load_steps=11 format=3 uid="uid://nm4vfjp0l71l"]
 
 [ext_resource type="Script" uid="uid://buhxhuqr26qsd" path="res://Scenes/Enemy/Enemy.cs" id="1_3l8kd"]
 [ext_resource type="Texture2D" uid="uid://dgtjy311vsnmk" path="res://Scenes/Enemy/Female001_No hair shadow-05.png" id="1_i1u57"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="3_e0oyi"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="4_shrp6"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="5_xqoj7"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="6_3jkxs"]
+[ext_resource type="Script" uid="uid://xup1cggkft48" path="res://Scenes/Enemy/EnemyMovement.cs" id="7_hn56f"]
+[ext_resource type="Script" uid="uid://dfhh4ljdxf0b4" path="res://Scenes/Enemy/EnemyShoot.cs" id="8_jg6oh"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3l8kd"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqoj7"]
 atlas = ExtResource("1_i1u57")
 region = Rect2(37, 3, 23, 29)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i1u57"]
-radius = 40.3595
+radius = 40.7922
 
 [node name="Enemy" type="CharacterBody2D"]
-scale = Vector2(3, 3)
 script = ExtResource("1_3l8kd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
-texture = SubResource("AtlasTexture_3l8kd")
+texture = SubResource("AtlasTexture_xqoj7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_i1u57")
+
+[node name="Components" type="Node" parent="."]
+
+[node name="EnemyMovement" type="Node" parent="Components"]
+script = ExtResource("7_hn56f")
+
+[node name="EnemyShoot" type="Node" parent="Components"]
+script = ExtResource("8_jg6oh")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_e0oyi")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("4_shrp6")
+initial_state = NodePath("AI")
+
+[node name="AI" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_shrp6")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/Root/AI"]
+script = ExtResource("5_xqoj7")
+
+[node name="To Walk" type="Node" parent="StateChart/Root/AI/Idle"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Walk")
+event = &"to_walk"
+delay_in_seconds = "0.0"
+
+[node name="To Wait" type="Node" parent="StateChart/Root/AI/Idle"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Wait")
+event = &"to_wait"
+delay_in_seconds = "0.0"
+
+[node name="To Shoot" type="Node" parent="StateChart/Root/AI/Idle"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Shoot")
+event = &"to_shoot"
+delay_in_seconds = "0.0"
+
+[node name="To Dash" type="Node" parent="StateChart/Root/AI/Idle"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Dash")
+event = &"to_dash"
+delay_in_seconds = "0.0"
+
+[node name="Walk" type="Node" parent="StateChart/Root/AI"]
+script = ExtResource("5_xqoj7")
+
+[node name="To Idle" type="Node" parent="StateChart/Root/AI/Walk"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Wait")
+event = &"walk_done"
+delay_in_seconds = "0.0"
+
+[node name="Wait" type="Node" parent="StateChart/Root/AI"]
+script = ExtResource("5_xqoj7")
+
+[node name="To Idle" type="Node" parent="StateChart/Root/AI/Wait"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Idle")
+event = &"wait_done"
+delay_in_seconds = "0.0"
+
+[node name="Shoot" type="Node" parent="StateChart/Root/AI"]
+script = ExtResource("5_xqoj7")
+
+[node name="To Idle" type="Node" parent="StateChart/Root/AI/Shoot"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Idle")
+event = &"shoot_done"
+delay_in_seconds = "0.0"
+
+[node name="Dash" type="Node" parent="StateChart/Root/AI"]
+script = ExtResource("5_xqoj7")
+
+[node name="To Idle" type="Node" parent="StateChart/Root/AI/Dash"]
+script = ExtResource("6_3jkxs")
+to = NodePath("../../Idle")
+event = &"dash_done"
+delay_in_seconds = "0.0"
+
+[node name="CompoundState" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_shrp6")
+initial_state = NodePath("future-dash")
+
+[node name="future-dash" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("5_xqoj7")
+
+[node name="future-evade" type="Node" parent="StateChart/Root/CompoundState"]
+script = ExtResource("5_xqoj7")
